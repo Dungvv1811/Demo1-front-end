@@ -11,8 +11,8 @@ function Home(props) {
         <thead>
           <tr>
             <th>#</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
+            <th>Image</th>
             <th>Username</th>
           </tr>
         </thead>

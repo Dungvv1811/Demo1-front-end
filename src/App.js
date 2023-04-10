@@ -1,16 +1,18 @@
 import "./App.css";
 import Table from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.css";
 import Header from "./components/Header";
-import Headline from "./components/Headline";
 import Home from "./components/Home";
+import List from "./components/products/List";
 // import Table from "react-bootstrap/Table";
 
 function App() {
   return (
     <div className="App">
-      <Header />
-      {/* <style>padding:50px; background-color:black;</style> */}
-      <Home />
+      sadfdasfads
+      <List />
+      {/* <Header /> */}
+      {/* <Home /> */}
     </div>
   );
 }
