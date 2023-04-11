@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function CreateProduct() {
   const navigate = useNavigate();
@@ -13,35 +15,38 @@ export default function CreateProduct() {
   const [price, setPrice] = useState("");
   const [validationError, setValidationError] = useState({});
 
-  const changeHandler = (event) => {
-    setImage(event.target.files[0]);
+  const changeHandler = (e) => {
+    setImage(e.target.files[0]);
   };
 
-  const createProduct = async (event) => {
-    event.preventDefault();
+  const createProduct = async (e) => {
+    e.preventDefault();
 
     const formData = new FormData();
     formData.append("name", name);
     formData.append("image", image);
     formData.append("price", price);
 
-    // await axios.post{}
-
-    const fetchProducts = () => {
-      // Where we're fetching data from
-      return (
-        fetch("http://localhost:8000/products")
-          // We get the API response and receive data in JSON format
-          .then((response) => response.json())
-          .then((data) => FormData(data))
-          .catch((error) => console.error(error))
-      );
-    };
+    await axios
+      .post(`http://localhost:8000/api/products`, formData)
+      .then(({ data }) => {
+        Swal.fire({
+          icon: "success",
+          text: data.message,
+        });
+        navigate("/");
+      })
+      .catch(({ response }) => {
+        if (response.status === 422) {
+          setValidationError(response.data.errors);
+        } else {
+          Swal.fire({
+            icon: "error",
+            text: response.data.message,
+          });
+        }
+      });
   };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   return (
     <div className="container">
@@ -75,8 +80,8 @@ export default function CreateProduct() {
                         <Form.Control
                           type="text"
                           value={name}
-                          onChange={(event) => {
-                            setName(event.target.value);
+                          onChange={(e) => {
+                            setName(e.target.value);
                           }}
                         />
                       </Form.Group>
@@ -96,11 +101,11 @@ export default function CreateProduct() {
                       <Form.Group controlId="Price">
                         <Form.Label>Price</Form.Label>
                         <Form.Control
-                          as="textarea"
-                          rows={3}
+                          type="text"
+                          // rows={3}
                           value={price}
-                          onChange={(event) => {
-                            setPrice(event.target.value);
+                          onChange={(e) => {
+                            setPrice(e.target.value);
                           }}
                         />
                       </Form.Group>

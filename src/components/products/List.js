@@ -1,36 +1,67 @@
-// import React from 'react';
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import Swal from "sweetalert2";
 
+export default List;
 function List(props) {
   const [products, setProducts] = useState([]);
 
-  const fetchProducts = () => {
-    // Where we're fetching data from
-    return (
-      fetch("http://localhost:8000/products")
-        // We get the API response and receive data in JSON format
-        .then((response) => response.json())
-        .then((data) => setProducts(data))
-        .catch((error) => console.error(error))
-    );
+  const fetchProducts = async () => {
+    await axios.get(`http://localhost:8000/api/products`).then(({ data }) => {
+      setProducts(data);
+    });
   };
 
   useEffect(() => {
     fetchProducts();
   }, []);
-  // console.log(products);
+
+  const deleteProducts = async (id) => {
+    const isConfirm = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      return result.isConfirmed;
+    });
+
+    if (isConfirm) {
+      return;
+    }
+
+    await axios
+      .delete(`http://localhost:8000/api/products/${id}`)
+      .then(({ data }) => {
+        Swal.fire({
+          icon: "success",
+          text: data.massage,
+        });
+        fetchProducts();
+      })
+      .catch(({ response: { data } }) => {
+        Swal.fire({
+          icon: "error",
+          text: data.massage,
+        });
+      });
+  };
+
   return (
     <div className="container">
       <div className="row">
         <div className="col-12">
-          {/* <Link
+          <Link
             className="btn btn-primary mb-2 float-end"
             to={"/product/create"}
           >
             Create Product
-          </Link> */}
+          </Link>
         </div>
         <div className="col-12">
           <div className="card card-body">
@@ -52,13 +83,13 @@ function List(props) {
                         <td>
                           <img
                             width="50px"
-                            src={`https://th.bing.com/th/id/OIP.06zW4_JU42jhM3JOsZ7AGQHaJA?w=173&h=211&c=7&r=0&o=5&pid=1.7`}
+                            // src={`http://localhost:8000/product/image/${row.image}`}
                           />
                         </td>
                         <td>{row.price}</td>
                         <td>
                           <Link
-                            to={`/product/edit/${row.id}`}
+                            // to={`/product/edit/${row.id}`}
                             className="btn btn-success me-2"
                           >
                             Edit
@@ -81,5 +112,3 @@ function List(props) {
     </div>
   );
 }
-
-export default List;
