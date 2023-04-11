@@ -83,7 +83,7 @@ function List(props) {
                         <td>
                           <img
                             width="50px"
-                            // src={`http://localhost:8000/product/image/${row.image}`}
+                            src={`http://localhost:8000/storage/product/image/${row.image}`}
                           />
                         </td>
                         <td>{row.price}</td>
