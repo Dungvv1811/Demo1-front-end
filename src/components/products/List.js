@@ -17,8 +17,9 @@ function List(props) {
   useEffect(() => {
     fetchProducts();
   }, []);
+  // console.log("AAAAAAA");
 
-  const deleteProducts = async (id) => {
+  const deleteProduct = async (id) => {
     const isConfirm = await Swal.fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -34,6 +35,7 @@ function List(props) {
     if (isConfirm) {
       return;
     }
+    // console.log("AAAAAAA");
 
     await axios
       .delete(`http://localhost:8000/api/products/${id}`)
@@ -89,14 +91,14 @@ function List(props) {
                         <td>{row.price}</td>
                         <td>
                           <Link
-                            // to={`/product/edit/${row.id}`}
+                            to={`/product/edit/${row.id}`}
                             className="btn btn-success me-2"
                           >
                             Edit
                           </Link>
                           <Button
                             variant="danger"
-                            // onClick={() => deleteProduct(row.id)}
+                            onClick={() => deleteProduct(row.id)}
                           >
                             Delete
                           </Button>

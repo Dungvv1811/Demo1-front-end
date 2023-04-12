@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
@@ -15,9 +15,17 @@ export default function CreateProduct() {
   const [price, setPrice] = useState("");
   const [validationError, setValidationError] = useState({});
 
+  useEffect(() => {
+    image && URL.revokeObjectURL(image.preview);
+  }, [image]);
+
   const changeHandler = (e) => {
-    setImage(e.target.files[0]);
+    const file = e.target.files[0];
+    file.preview = URL.createObjectURL(image);
+
+    setImage(file);
   };
+  // console.log("AAAAAAAAAAAAA");
 
   const createProduct = async (e) => {
     e.preventDefault();
@@ -26,7 +34,6 @@ export default function CreateProduct() {
     formData.append("name", name);
     formData.append("image", image);
     formData.append("price", price);
-
     await axios
       .post(`http://localhost:8000/api/products`, formData)
       .then(({ data }) => {
@@ -76,7 +83,7 @@ export default function CreateProduct() {
                   <Row>
                     <Col>
                       <Form.Group controlId="Name">
-                        <Form.Label>Title</Form.Label>
+                        <Form.Label>Name</Form.Label>
                         <Form.Control
                           type="text"
                           value={name}
@@ -93,6 +100,9 @@ export default function CreateProduct() {
                       <Form.Group controlId="Image" className="mb-3">
                         <Form.Label>Image</Form.Label>
                         <Form.Control type="file" onChange={changeHandler} />
+                        {image && (
+                          <img src={image.preview} alt="" width="80%" />
+                        )}
                       </Form.Group>
                     </Col>
                   </Row>
