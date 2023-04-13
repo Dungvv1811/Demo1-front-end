@@ -16,14 +16,15 @@ export default function CreateProduct() {
   const [validationError, setValidationError] = useState({});
 
   useEffect(() => {
-    image && URL.revokeObjectURL(image.preview);
+    console.log(123132123);
+    console.log(image);
+    return () => image && URL.revokeObjectURL(image);
   }, [image]);
 
   const changeHandler = (e) => {
     const file = e.target.files[0];
-    file.preview = URL.createObjectURL(image);
 
-    setImage(file);
+    setImage(URL.createObjectURL(file));
   };
   // console.log("AAAAAAAAAAAAA");
 
@@ -100,9 +101,7 @@ export default function CreateProduct() {
                       <Form.Group controlId="Image" className="mb-3">
                         <Form.Label>Image</Form.Label>
                         <Form.Control type="file" onChange={changeHandler} />
-                        {image && (
-                          <img src={image.preview} alt="" width="80%" />
-                        )}
+                        {image && <img src={image} alt="" width="80%" />}
                       </Form.Group>
                     </Col>
                   </Row>

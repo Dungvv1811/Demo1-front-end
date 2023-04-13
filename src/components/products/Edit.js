@@ -7,7 +7,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function EditUser() {
+export default function EditProduct() {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -15,18 +15,6 @@ export default function EditUser() {
   const [image, setImage] = useState();
   const [price, setPrice] = useState("");
   const [validationError, setValidationError] = useState({});
-
-  useEffect(() => {
-    fetchProducts();
-    image && URL.revokeObjectURL(image.preview);
-  }, [image]);
-
-  const changeHandler = (e) => {
-    const file = e.target.files[0];
-    file.preview = URL.createObjectURL(image);
-
-    setImage(file);
-  };
 
   const fetchProducts = async () => {
     await axios
@@ -44,7 +32,20 @@ export default function EditUser() {
       });
   };
 
-  const UpdateProduct = async (e) => {
+  useEffect(() => {
+    fetchProducts();
+    //   image && URL.revokeObjectURL(image.preview);
+    // }, [image]
+  });
+
+  const changeHandler = (e) => {
+    setImage(e.target.files[0]);
+    // const file = e.target.files[0];
+    // file.preview = URL.createObjectURL(image);
+    // setImage(file);
+  };
+
+  const updateProduct = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -52,7 +53,7 @@ export default function EditUser() {
     formData.append("name", name);
     formData.append("price", price);
 
-    if (image) {
+    if (image !== null) {
       formData.append("image", image);
     }
 
@@ -83,7 +84,7 @@ export default function EditUser() {
         <div className="col-12 col-sm-12 col-md-6">
           <div className="card">
             <div className="card-body">
-              <h4 className="card-title">Update Product</h4>
+              <h4 className="card-title">Edit Product</h4>
               <hr />
               <div className="form-wrapper">
                 {Object.keys(validationError).length > 0 && (
@@ -101,7 +102,7 @@ export default function EditUser() {
                     </div>
                   </div>
                 )}
-                <Form onSubmit={UpdateProduct}>
+                <Form onSubmit={updateProduct}>
                   <Row>
                     <Col>
                       <Form.Group controlId="Name">
@@ -121,10 +122,10 @@ export default function EditUser() {
                     <Col>
                       <Form.Group controlId="Image" className="mb-3">
                         <Form.Label>Image</Form.Label>
-                        <Form.Contro l type="file" onChange={changeHandler} />
-                        {image && (
+                        <Form.Control type="file" onChange={changeHandler} />
+                        {/* {image && (
                           <img src={image.preview} alt="" width="80%" />
-                        )}
+                        )} */}
                       </Form.Group>
                     </Col>
                   </Row>
@@ -150,7 +151,7 @@ export default function EditUser() {
                     block="block"
                     type="submit"
                   >
-                    Save
+                    Update
                   </Button>
                 </Form>
               </div>
