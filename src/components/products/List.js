@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import { Link, Route, Routes } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import EditProduct from "./Edit";
 
 export default ListProduct;
 function ListProduct(props) {
@@ -18,7 +17,6 @@ function ListProduct(props) {
   useEffect(() => {
     fetchProducts();
   }, []);
-  // console.log("AAAAAAA");
 
   const deleteProduct = async (id) => {
     const isConfirm = await Swal.fire({
