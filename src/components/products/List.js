@@ -5,18 +5,18 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 export default ListProduct;
-function ListProduct(props) {
+function ListProduct() {
   const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   const fetchProducts = async () => {
     await axios.get(`http://localhost:8000/api/products`).then(({ data }) => {
       setProducts(data);
     });
   };
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
 
   const deleteProduct = async (id) => {
     const isConfirm = await Swal.fire({
@@ -31,10 +31,9 @@ function ListProduct(props) {
       return result.isConfirmed;
     });
 
-    if (isConfirm) {
+    if (!isConfirm) {
       return;
     }
-    // console.log("AAAAAAA");
 
     await axios
       .delete(`http://localhost:8000/api/products/${id}`)

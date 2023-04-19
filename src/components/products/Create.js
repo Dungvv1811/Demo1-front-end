@@ -15,18 +15,17 @@ export default function CreateProduct() {
   const [price, setPrice] = useState("");
   const [validationError, setValidationError] = useState({});
 
-  useEffect(() => {
-    console.log(123132123);
-    console.log(image);
-    return () => image && URL.revokeObjectURL(image);
-  }, [image]);
+  // useEffect(() => {
+  // fetchProducts();
+  //   return () => image && URL.revokeObjectURL(image);
+  // }, [image]);
+  // });
 
   const changeHandler = (e) => {
     const file = e.target.files[0];
 
     setImage(URL.createObjectURL(file));
   };
-  // console.log("AAAAAAAAAAAAA");
 
   const createProduct = async (e) => {
     e.preventDefault();
