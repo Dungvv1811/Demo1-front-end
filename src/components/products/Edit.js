@@ -34,15 +34,15 @@ export default function EditProduct() {
 
   useEffect(() => {
     fetchProducts();
-    //   image && URL.revokeObjectURL(image.preview);
-    // }, [image]
-  });
+    image && URL.revokeObjectURL(image);
+  }, []);
 
   const changeHandler = (e) => {
-    setImage(e.target.files[0]);
-    // const file = e.target.files[0];
-    // file.preview = URL.createObjectURL(image);
-    // setImage(file);
+    const image = e.target.files[0];
+    if (image) {
+      image.preview = URL.createObjectURL(image);
+      setImage(e.target.files[0]);
+    }
   };
 
   const updateProduct = async (e) => {
@@ -108,7 +108,7 @@ export default function EditProduct() {
                       <Form.Group controlId="Name">
                         <Form.Label>Name</Form.Label>
                         <Form.Control
-                          type="text"
+                          type="varchar"
                           value={name}
                           onChange={(e) => {
                             setName(e.target.value);
@@ -122,10 +122,14 @@ export default function EditProduct() {
                     <Col>
                       <Form.Group controlId="Image" className="mb-3">
                         <Form.Label>Image</Form.Label>
-                        <Form.Control type="file" onChange={changeHandler} />
-                        {/* {image && (
+                        <Form.Control
+                          // value={image}
+                          type="file"
+                          onChange={changeHandler}
+                        />
+                        {image && (
                           <img src={image.preview} alt="" width="80%" />
-                        )} */}
+                        )}
                       </Form.Group>
                     </Col>
                   </Row>
@@ -134,7 +138,7 @@ export default function EditProduct() {
                       <Form.Group controlId="Price">
                         <Form.Label>Price</Form.Label>
                         <Form.Control
-                          type="text"
+                          type="int"
                           // rows={3}
                           value={price}
                           onChange={(e) => {

@@ -15,16 +15,17 @@ export default function CreateProduct() {
   const [price, setPrice] = useState("");
   const [validationError, setValidationError] = useState({});
 
-  // useEffect(() => {
-  // fetchProducts();
-  //   return () => image && URL.revokeObjectURL(image);
-  // }, [image]);
-  // });
+  useEffect(() => {
+    // fetchProducts();
+    return () => image && URL.revokeObjectURL(image);
+  }, []);
 
   const changeHandler = (e) => {
-    const file = e.target.files[0];
-
-    setImage(URL.createObjectURL(file));
+    const image = e.target.files[0];
+    if (image) {
+      image.preview = URL.createObjectURL(image);
+      setImage(e.target.files[0]);
+    }
   };
 
   const createProduct = async (e) => {
@@ -85,7 +86,7 @@ export default function CreateProduct() {
                       <Form.Group controlId="Name">
                         <Form.Label>Name</Form.Label>
                         <Form.Control
-                          type="text"
+                          type="varchar"
                           value={name}
                           onChange={(e) => {
                             setName(e.target.value);
@@ -100,7 +101,9 @@ export default function CreateProduct() {
                       <Form.Group controlId="Image" className="mb-3">
                         <Form.Label>Image</Form.Label>
                         <Form.Control type="file" onChange={changeHandler} />
-                        {image && <img src={image} alt="" width="80%" />}
+                        {image && (
+                          <img src={image.preview} alt="" width="80%" />
+                        )}
                       </Form.Group>
                     </Col>
                   </Row>
@@ -109,7 +112,7 @@ export default function CreateProduct() {
                       <Form.Group controlId="Price">
                         <Form.Label>Price</Form.Label>
                         <Form.Control
-                          type="text"
+                          type="int"
                           // rows={3}
                           value={price}
                           onChange={(e) => {
