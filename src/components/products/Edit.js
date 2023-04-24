@@ -127,8 +127,14 @@ export default function EditProduct() {
                           type="file"
                           onChange={changeHandler}
                         />
-                        {image && (
+                        {image ? (
                           <img src={image.preview} alt="" width="80%" />
+                        ) : (
+                          <img
+                            src={`http://localhost:8000/storage/product/image/${image}`}
+                            alt=""
+                            width="80%"
+                          />
                         )}
                       </Form.Group>
                     </Col>
