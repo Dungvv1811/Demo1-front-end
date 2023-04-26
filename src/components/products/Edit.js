@@ -20,9 +20,13 @@ export default function EditProduct() {
     await axios
       .get(`http://localhost:8000/api/products/${id}`)
       .then(({ data }) => {
-        const { name, price } = data.product;
+        console.log(data);
+        // chỗ này sao em ko set luôn data vào
+        const { name, price, image } = data.product;
         setName(name);
         setPrice(price);
+        setImage(image);
+        //em check xem form upload img nó nhận vào dạng dữ liệu gì
       })
       .catch(({ response: { data } }) => {
         Swal.fire({
@@ -34,6 +38,7 @@ export default function EditProduct() {
 
   useEffect(() => {
     fetchProducts();
+    console.log("image2", image);
     image && URL.revokeObjectURL(image);
   }, []);
 
@@ -52,10 +57,11 @@ export default function EditProduct() {
     formData.append("_method", "PATCH");
     formData.append("name", name);
     formData.append("price", price);
-
     if (image !== null) {
       formData.append("image", image);
     }
+    console.log("ccccc", formData.append("image", image));
+    // console.log(formData.append("ssssssssssssssssssss"));
 
     await axios
       .post(`http://localhost:8000/api/products/${id}`, formData)
@@ -127,15 +133,17 @@ export default function EditProduct() {
                           type="file"
                           onChange={changeHandler}
                         />
-                        {image ? (
-                          <img src={image.preview} alt="" width="80%" />
-                        ) : (
-                          <img
-                            src={`http://localhost:8000/storage/product/image/${image}`}
-                            alt=""
-                            width="80%"
-                          />
-                        )}
+                        {console.log("AAAAAAA", image)}
+                        {
+                          image && <img src={image} alt="" width="80%" />
+                          // : (
+                          //   <img
+                          //     src={`http://localhost:8000/storage/product/image/${image}`}
+                          //     alt=""
+                          //     width="80%"
+                          //   />
+                          // )
+                        }
                       </Form.Group>
                     </Col>
                   </Row>
