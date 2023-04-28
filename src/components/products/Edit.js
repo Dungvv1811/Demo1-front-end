@@ -26,6 +26,7 @@ export default function EditProduct() {
         setName(name);
         setPrice(price);
         setImage(image);
+        // console.log(setImage(image));
         //em check xem form upload img nó nhận vào dạng dữ liệu gì
       })
       .catch(({ response: { data } }) => {
@@ -60,8 +61,7 @@ export default function EditProduct() {
     if (image !== null) {
       formData.append("image", image);
     }
-    console.log("ccccc", formData.append("image", image));
-    // console.log(formData.append("ssssssssssssssssssss"));
+    // console.log("ccccc", formData.append("image", image));
 
     await axios
       .post(`http://localhost:8000/api/products/${id}`, formData)
@@ -128,22 +128,15 @@ export default function EditProduct() {
                     <Col>
                       <Form.Group controlId="Image" className="mb-3">
                         <Form.Label>Image</Form.Label>
-                        <Form.Control
-                          // value={image}
-                          type="file"
-                          onChange={changeHandler}
-                        />
-                        {console.log("AAAAAAA", image)}
-                        {
-                          image && <img src={image} alt="" width="80%" />
-                          // : (
-                          //   <img
-                          //     src={`http://localhost:8000/storage/product/image/${image}`}
-                          //     alt=""
-                          //     width="80%"
-                          //   />
-                          // )
-                        }
+                        <Form.Control type="file" onChange={changeHandler} />
+                        {image && <img src={image.preview} width="80%" />}
+                        {image && (
+                          <img
+                            src={`http://localhost:8000/storage/product/image/${image}`}
+                            alt=""
+                            width="80%"
+                          />
+                        )}
                       </Form.Group>
                     </Col>
                   </Row>
@@ -153,7 +146,6 @@ export default function EditProduct() {
                         <Form.Label>Price</Form.Label>
                         <Form.Control
                           type="int"
-                          // rows={3}
                           value={price}
                           onChange={(e) => {
                             setPrice(e.target.value);
