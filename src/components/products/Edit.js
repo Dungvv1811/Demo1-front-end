@@ -11,9 +11,8 @@ export default function EditProduct() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [name, setName] = useState("");
-  const [image, setImage] = useState();
-  const [price, setPrice] = useState("");
+  const [product, setProduct] = useState(null);
+  const [image, setImage] = useState(null);
   const [validationError, setValidationError] = useState({});
 
   const fetchProducts = async () => {
@@ -22,10 +21,7 @@ export default function EditProduct() {
       .then(({ data }) => {
         console.log(data);
         // chỗ này sao em ko set luôn data vào
-        const { name, price, image } = data.product;
-        setName(name);
-        setPrice(price);
-        setImage(image);
+        setProduct(data.product);
         // console.log(setImage(image));
         //em check xem form upload img nó nhận vào dạng dữ liệu gì
       })
@@ -39,14 +35,14 @@ export default function EditProduct() {
 
   useEffect(() => {
     fetchProducts();
-    console.log("image2", image);
-    image && URL.revokeObjectURL(image);
+    // console.log("image2", image);
+    // product.image && URL.revokeObjectURL(product.image);
   }, []);
 
   const changeHandler = (e) => {
-    const image = e.target.files[0];
-    if (image) {
-      image.preview = URL.createObjectURL(image);
+    product.image = e.target.files[0];
+    if (product.image) {
+      product.image.preview = URL.createObjectURL(product.image);
       setImage(e.target.files[0]);
     }
   };
@@ -56,10 +52,10 @@ export default function EditProduct() {
 
     const formData = new FormData();
     formData.append("_method", "PATCH");
-    formData.append("name", name);
-    formData.append("price", price);
-    if (image !== null) {
-      formData.append("image", image);
+    formData.append("name", product.name);
+    formData.append("price", product.price);
+    if (product.image !== null) {
+      formData.append("image", product.image);
     }
     // console.log("ccccc", formData.append("image", image));
 
@@ -82,6 +78,16 @@ export default function EditProduct() {
           });
         }
       });
+  };
+
+  const getImage = () => {
+    if (image?.preview) {
+      return image?.preview;
+    } else if (product?.image) {
+      return `http://localhost:8000/storage/product/image/${product?.image}`;
+    }
+
+    return "";
   };
 
   return (
@@ -115,9 +121,9 @@ export default function EditProduct() {
                         <Form.Label>Name</Form.Label>
                         <Form.Control
                           type="varchar"
-                          value={name}
+                          value={product?.name}
                           onChange={(e) => {
-                            setName(e.target.value);
+                            setProduct(e.target.value);
                           }}
                         />
                       </Form.Group>
@@ -129,14 +135,7 @@ export default function EditProduct() {
                       <Form.Group controlId="Image" className="mb-3">
                         <Form.Label>Image</Form.Label>
                         <Form.Control type="file" onChange={changeHandler} />
-                        {image && <img src={image.preview} width="80%" />}
-                        {image && (
-                          <img
-                            src={`http://localhost:8000/storage/product/image/${image}`}
-                            alt=""
-                            width="80%"
-                          />
-                        )}
+                        <img src={getImage()} width="80%" />
                       </Form.Group>
                     </Col>
                   </Row>
@@ -146,9 +145,9 @@ export default function EditProduct() {
                         <Form.Label>Price</Form.Label>
                         <Form.Control
                           type="int"
-                          value={price}
+                          value={product?.price}
                           onChange={(e) => {
-                            setPrice(e.target.value);
+                            setProduct(e.target.value);
                           }}
                         />
                       </Form.Group>

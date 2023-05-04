@@ -13,6 +13,7 @@ export default function CreateProduct() {
   const [name, setName] = useState("");
   const [image, setImage] = useState();
   const [price, setPrice] = useState("");
+  const [disable, setDisable] = useState(0);
   const [validationError, setValidationError] = useState({});
 
   useEffect(() => {
@@ -30,6 +31,7 @@ export default function CreateProduct() {
 
   const createProduct = async (e) => {
     e.preventDefault();
+    setDisable(true);
 
     const formData = new FormData();
     formData.append("name", name);
@@ -54,7 +56,17 @@ export default function CreateProduct() {
           });
         }
       });
+
+    // e.currentTarget.disabled = true;
+    setDisable(false);
   };
+  const handleClick = (e) => {
+    e.currentTarget.disabled = true;
+  };
+  // const disBtn = (e) => {
+  //   // if()
+  //   e.currentTarget.disabled = true;
+  // };
 
   return (
     <div className="container">
@@ -127,6 +139,9 @@ export default function CreateProduct() {
                     className="mt-2"
                     size="lg"
                     block="block"
+                    // onClick={handleClick}
+                    disabled={disable}
+                    // disabled
                     type="submit"
                   >
                     Save
