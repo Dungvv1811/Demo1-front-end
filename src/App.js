@@ -1,19 +1,24 @@
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import "bootstrap/dist/css/bootstrap.css";
-import { Link, Route, Routes } from "react-router-dom";
-import "./App.css";
-import CreateProduct from "./components/products/Create";
-import EditProduct from "./components/products/Edit";
-import ListProduct from "./components/products/List";
+// import Container from "react-bootstrap/Container";
+// import Nav from "react-bootstrap/Nav";
+// import Navbar from "react-bootstrap/Navbar";
+// import NavDropdown from "react-bootstrap/NavDropdown";
+// import "bootstrap/dist/css/bootstrap.css";
+// import { Link, Route, Routes } from "react-router-dom";
+// import "./App.css";
+// import CreateProduct from "./components/products/Create";
+// import EditProduct from "./components/products/Edit";
+// import ListProduct from "./components/products/List";
 // import Table from "react-bootstrap/Table";
+import { Typography, Divider } from "antd";
+import "./App.css";
+import TodoList from "./components/TodoList";
+import Filters from "./components/Filters";
 
+const { Title } = Typography;
 function App() {
   return (
     <>
-      <div className="App">
+      {/* <div className="App">
         <Navbar bg="light" expand="lg">
           <Container>
             <Navbar.Brand as={Link} href="/">
@@ -54,6 +59,24 @@ function App() {
             element={<EditProduct />}
           ></Route>
         </Routes>
+      </div> */}
+      <div
+        style={{
+          width: 500,
+          margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: "white",
+          padding: 20,
+          boxShadow: "0 0 10px 4px #bfbfbf",
+          borderRadius: 5,
+          height: "90vh",
+        }}
+      >
+        <Title style={{ textAlign: "center" }}>TODO APP with REDUX</Title>
+        <Filters />
+        <Divider />
+        <TodoList />
       </div>
     </>
   );
