@@ -2,9 +2,9 @@ import { Button, Col, Input, Row, Select, Tag } from "antd";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { addTodo } from "../../redux/actions";
 import Todo from "../Todo";
 import { todosRemainingSelector } from "../redux/selectors";
+import todoListSlice from "./todosSlice";
 
 export default function TodoList() {
   const [todoName, setTodoName] = useState("");
@@ -13,24 +13,23 @@ export default function TodoList() {
   const todoList = useSelector(todosRemainingSelector);
   const dispatch = useDispatch();
 
-  const handleAddButtononClick = (e) => {
-    const handleAddButtononClick = () => {
-      dispatch(
-        addTodo({
-          id: uuidv4(),
-          name: todoName,
-          priority: priority,
-          completed: false,
-        })
-      );
+  const handleAddButtononClick = () => {
+    dispatch(
+      todoListSlice.action.addTodo({
+        id: uuidv4(),
+        name: todoName,
+        priority: priority,
+        completed: false,
+      })
+    );
 
-      setTodoName("");
-      setPriority("Medium");
-    };
-    const handleInputChange = (e) => {
-      console.log("handleInputChange", e.target.value);
-      setTodoName(e.target.value);
-    };
+    setTodoName("");
+    setPriority("Medium");
+  };
+
+  const handleInputChange = (e) => {
+    console.log("handleInputChange", e.target.value);
+    setTodoName(e.target.value);
   };
 
   const handlePriority = (value) => {
@@ -43,6 +42,7 @@ export default function TodoList() {
         {todoList.map((todo) => (
           <Todo
             key={todo.id}
+            id={todo.id}
             name={todo.name}
             prioriry={todo.prioriry}
             completed={todo.completed}
@@ -55,7 +55,7 @@ export default function TodoList() {
           <Select
             defaultValue="Medium"
             value={priority}
-            onChange={handleInputChange}
+            onChange={handlePriority}
           >
             <Select.Option value="High" label="High">
               <Tag color="red">High</Tag>
