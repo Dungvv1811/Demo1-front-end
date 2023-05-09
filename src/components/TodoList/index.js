@@ -14,8 +14,9 @@ export default function TodoList() {
   const dispatch = useDispatch();
 
   const handleAddButtononClick = () => {
+    // console.log("AAAAAAAAAAAAAA");
     dispatch(
-      todoListSlice.action.addTodo({
+      todoListSlice.actions.addTodo({
         id: uuidv4(),
         name: todoName,
         priority: priority,
@@ -32,8 +33,9 @@ export default function TodoList() {
     setTodoName(e.target.value);
   };
 
-  const handlePriority = (value) => {
+  const handlePriorityChange = (value) => {
     console.log({ value });
+    setPriority({ value });
   };
 
   return (
@@ -55,7 +57,7 @@ export default function TodoList() {
           <Select
             defaultValue="Medium"
             value={priority}
-            onChange={handlePriority}
+            onChange={handlePriorityChange}
           >
             <Select.Option value="High" label="High">
               <Tag color="red">High</Tag>
@@ -67,7 +69,7 @@ export default function TodoList() {
               <Tag color="gray">Low</Tag>
             </Select.Option>
           </Select>
-          <Button type="primary" onclick={handleAddButtononClick}>
+          <Button type="primary" onClick={handleAddButtononClick}>
             Add
           </Button>
         </Input.Group>
