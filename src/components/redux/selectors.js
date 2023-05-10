@@ -11,7 +11,7 @@ export const todosRemainingSelector = createSelector(
   filterPrioritiesSelector,
   (todoList, status, searchText, priorities) => {
     return todoList.filter((todo) => {
-      if (todo.status === "All") {
+      if (status === "All") {
         return priorities.length
           ? todo.name.includes(searchText) && priorities.includes(todo.priority)
           : todo.name.includes(searchText);

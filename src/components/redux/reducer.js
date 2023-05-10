@@ -7,5 +7,4 @@ const rootReducer = combineReducers({
   filters: filtersReducer,
   todoList: todoListReducer,
 });
-
 export default rootReducer;

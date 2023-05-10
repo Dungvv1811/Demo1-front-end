@@ -1,14 +1,16 @@
-// import { createStore } from "redux";
-// import rootReducer from "./reducer";
-// import { composeWithDevTools } from "redux-devtools-extention";
+// import { createStore } from 'redux';
+// import rootReducer from './reducer';
+// import { composeWithDevTools } from 'redux-devtools-extension';
 
-// const composeEnhancers = composeWithDevTools();
-// const store = createStore(rootReducer, composeEnhancers);
+// const composedEnhancers = composeWithDevTools();
+
+// const store = createStore(rootReducer, composedEnhancers);
+
 // export default store;
 
 import { configureStore } from "@reduxjs/toolkit";
-import todosSlice from "../TodoList/todosSlice";
 import filtersSlice from "../Filters/filtersSlice";
+import todosSlice from "../TodoList/todosSlice";
 
 const store = configureStore({
   reducer: {

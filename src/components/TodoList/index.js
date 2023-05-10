@@ -1,20 +1,19 @@
-import { Button, Col, Input, Row, Select, Tag } from "antd";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+import { Col, Row, Input, Button, Select, Tag } from "antd";
 import Todo from "../Todo";
+import { useDispatch, useSelector } from "react-redux";
+// import { addTodo } from '../../redux/actions';
+import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 import { todosRemainingSelector } from "../redux/selectors";
 import todoListSlice from "./todosSlice";
 
 export default function TodoList() {
   const [todoName, setTodoName] = useState("");
   const [priority, setPriority] = useState("Medium");
-
   const todoList = useSelector(todosRemainingSelector);
   const dispatch = useDispatch();
 
-  const handleAddButtononClick = () => {
-    // console.log("AAAAAAAAAAAAAA");
+  const handleAddButtonClick = () => {
     dispatch(
       todoListSlice.actions.addTodo({
         id: uuidv4(),
@@ -23,21 +22,16 @@ export default function TodoList() {
         completed: false,
       })
     );
-
     setTodoName("");
     setPriority("Medium");
   };
-
   const handleInputChange = (e) => {
     console.log("handleInputChange", e.target.value);
     setTodoName(e.target.value);
   };
-
   const handlePriorityChange = (value) => {
-    console.log({ value });
-    setPriority({ value });
+    setPriority(value);
   };
-
   return (
     <Row style={{ height: "calc(100% - 40px)" }}>
       <Col span={24} style={{ height: "calc(100% - 40px)", overflowY: "auto" }}>
@@ -46,7 +40,7 @@ export default function TodoList() {
             key={todo.id}
             id={todo.id}
             name={todo.name}
-            prioriry={todo.prioriry}
+            prioriry={todo.priority}
             completed={todo.completed}
           />
         ))}
@@ -69,7 +63,7 @@ export default function TodoList() {
               <Tag color="gray">Low</Tag>
             </Select.Option>
           </Select>
-          <Button type="primary" onClick={handleAddButtononClick}>
+          <Button type="primary" onClick={handleAddButtonClick}>
             Add
           </Button>
         </Input.Group>

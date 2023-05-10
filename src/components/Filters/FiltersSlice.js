@@ -1,32 +1,33 @@
 // const initState = {
-//   search: "",
-//   status: "All",
-//   priority: [],
+//   search: '',
+//   status: 'All',
+//   priorities: [],
 // };
+
 // const filtersReducer = (state = initState, action) => {
 //   switch (action.type) {
-//     case "filters/serachFilterChange":
+//     case 'filters/searchFilterChange':
 //       return {
 //         ...state,
 //         search: action.payload,
 //       };
 
-//     case "filters/statusFilterChange":
+//     case 'filters/statusFilterChange':
 //       return {
 //         ...state,
-//         status: action.payload,
-//       };
+//         status: action.payload
+//       }
 
-//     case "filters/prioritiesFilterChange":
+//     case 'filters/prioritiesFilterChange':
 //       return {
 //         ...state,
-//         priorities: action.payload,
-//       };
-
+//         priorities: action.payload
+//       }
 //     default:
 //       return state;
 //   }
 // };
+
 // export default filtersReducer;
 
 import { createSlice } from "@reduxjs/toolkit";
@@ -40,6 +41,7 @@ export default createSlice({
   },
   reducers: {
     searchFilterChange: (state, action) => {
+      // mutation || IMMER
       state.search = action.payload;
     },
     statusFilterChange: (state, action) => {
